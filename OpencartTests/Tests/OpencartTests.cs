@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpencartTests.Helpers;
 using OpencartTests.Pages;
 using OpencartTests.Configuration;
+using static OpencartTests.Helpers.TestData;
 
 namespace OpencartTests.Tests
 {
@@ -12,16 +13,12 @@ namespace OpencartTests.Tests
         private IWebDriver driver;
         private DriverManager driverManager;
         private HomePage homePage;
-        private TestConfiguration _config;
         
         [SetUp]
         public void Setup()
         {
-            // Load configuration from appsettings.json
-            _config = ConfigurationHelper.GetConfiguration();
-            
-            // Initialize driver with configuration
-            driverManager = new DriverManager(_config.Browser.Type, _config.Browser.Headless);
+            // Simple config - just 3 values from appsettings.json
+            driverManager = new DriverManager(Config.BrowserType, Config.BrowserHeadless);
             driver = driverManager.InitializeDriver();
             homePage = new HomePage(driver);
         }
@@ -31,7 +28,7 @@ namespace OpencartTests.Tests
         public void Test_HomePage_VerifyTitle()
         {
             // Arrange & Act
-            homePage.NavigateTo(_config.BaseUrl);
+            homePage.NavigateTo(Config.BaseUrl);
             string title = homePage.GetTitle();
             
             // Assert
@@ -45,7 +42,7 @@ namespace OpencartTests.Tests
         public void Test_NavigateToLoginPage_VerifyUrl()
         {
             // Arrange
-            homePage.NavigateTo(_config.BaseUrl);
+            homePage.NavigateTo(Config.BaseUrl);
             
             // Act
             var loginPage = homePage.ClickMyAccountLogin();
@@ -62,16 +59,16 @@ namespace OpencartTests.Tests
         public void Test_Login_InvalidCredentials_ShowsError()
         {
             // Arrange
-            homePage.NavigateTo(_config.BaseUrl);
+            homePage.NavigateTo(Config.BaseUrl);
             var loginPage = homePage.ClickMyAccountLogin();
             
-            // Act - Using credentials from configuration
-            loginPage.Login(_config.TestUsers.Invalid.Email, _config.TestUsers.Invalid.Password);
+            // Act - Using simple test data (no complex config!)
+            loginPage.Login(Users.Invalid.Email, Users.Invalid.Password);
             
             // Assert
             Assert.That(loginPage.IsErrorDisplayed(), Is.True, "Error message should be displayed");
             string errorText = loginPage.GetErrorMessage();
-            Assert.That(errorText, Does.Contain("Warning"));
+            Assert.That(errorText, Does.Contain(ErrorMessages.InvalidLogin));
             
             Console.WriteLine($"✓ Error message verified: {errorText}");
         }
@@ -81,15 +78,15 @@ namespace OpencartTests.Tests
         public void Test_SearchProduct_MacBook_VerifyResults()
         {
             // Arrange
-            homePage.NavigateTo(_config.BaseUrl);
+            homePage.NavigateTo(Config.BaseUrl);
             
-            // Act - Using product name from configuration
-            var searchResultsPage = homePage.SearchProduct(_config.TestData.SearchProducts.MacBook);
+            // Act - Using simple test data (no complex config!)
+            var searchResultsPage = homePage.SearchProduct(Products.MacBook);
             
             // Assert
-            Assert.That(searchResultsPage.IsProductDisplayed(_config.TestData.SearchProducts.MacBook), Is.True);
+            Assert.That(searchResultsPage.IsProductDisplayed(Products.MacBook), Is.True);
             
-            Console.WriteLine($"✓ Search results verified for {_config.TestData.SearchProducts.MacBook}");
+            Console.WriteLine($"✓ Search results verified for {Products.MacBook}");
         }
         
         [TearDown]

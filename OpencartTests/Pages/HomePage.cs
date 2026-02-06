@@ -36,6 +36,13 @@ namespace OpencartTests.Pages
             _driver.FindElement(LoginLink).Click();
             return new LoginPage(_driver);
         }
+
+        public RegisterPage ClickMyAccountRegister()
+        {
+            _driver.FindElement(MyAccountDropdown).Click();
+            _driver.FindElement(RegisterLink).Click();
+            return new RegisterPage(_driver);
+        }
         
         public SearchResultsPage SearchProduct(string productName)
         {
