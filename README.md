@@ -68,6 +68,7 @@ dotnet test
 - Strongly-typed configuration with environment overrides
 - Explicit waits for dynamic elements
 - Sequential API testing (POST → GET → PUT → GET)
+- Allure reporting for test results
 
 ## 🧪 Test Suites
 
@@ -87,6 +88,22 @@ dotnet test --filter "Category=Smoke"
 dotnet test --filter "Category=API"
 ```
 
+## 📊 Allure Reporting
+
+Run tests and view interactive HTML report:
+
+```bash
+cd OpencartTests
+
+# Run tests (generates allure-results/)
+dotnet test --filter "Category=API"
+
+# Open report in browser
+allure serve allure-results
+```
+
+**Prerequisites:** Install Allure CLI (`brew install allure`)
+
 ## 💬 Interview Talking Points
 
 **Configuration Management:**
@@ -104,7 +121,7 @@ dotnet test --filter "Category=API"
 ## 🛠️ Tech Stack
 
 - .NET 10.0 | NUnit 4.3.2 | Selenium WebDriver 4.40.0
-- RestSharp 113.1.0 | Bogus 35.6.5
+- RestSharp 113.1.0 | Bogus 35.6.5 | Allure.NUnit 2.14.1
 - Microsoft.Extensions.Configuration 9.0.1
 
 ## 📄 Documentation

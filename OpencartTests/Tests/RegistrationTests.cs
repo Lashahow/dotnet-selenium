@@ -1,3 +1,5 @@
+using Allure.NUnit;
+using Allure.NUnit.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpencartTests.Helpers;
@@ -11,6 +13,8 @@ namespace OpencartTests.Tests
     /// Uses dynamic test data (Faker/Bogus) to generate unique data for each run
     /// </summary>
     [TestFixture]
+    [AllureNUnit]
+    [AllureSuite("Registration Tests")]
     public class RegistrationTests
     {
         private IWebDriver driver;

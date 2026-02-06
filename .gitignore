@@ -111,6 +111,10 @@ _pkginfo.txt
 TestResult.xml
 nunit-*.xml
 
+# Allure Reports
+allure-results/
+allure-report/
+
 # Code coverage results
 *.coverage
 *.coveragexml

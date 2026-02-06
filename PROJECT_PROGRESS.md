@@ -36,6 +36,11 @@ NUnit + Selenium C# test automation framework for technical interview preparatio
 - ✅ Environment-specific overrides (Dev/CI/Production)
 - ✅ Environment variable support
 
+### Reporting
+- ✅ Allure Report integration (`allure serve allure-results`)
+- ✅ Test suites grouping (UI Tests, API Tests, Registration Tests)
+- ✅ allure-results added to .gitignore
+
 ---
 
 ## 🎯 Key Architecture Highlights
@@ -48,6 +53,7 @@ NUnit + Selenium C# test automation framework for technical interview preparatio
 | **DRY Principle** | Reuse GET test for verification |
 | **Test Data Generation** | Bogus library for unique data |
 | **Sequential Testing** | API tests use [Order] attribute |
+| **Allure Reporting** | Interactive HTML test reports |
 
 ---
 
@@ -57,7 +63,7 @@ NUnit + Selenium C# test automation framework for technical interview preparatio
 - [ ] Screenshot capture on test failure
 - [ ] BaseTest class to reduce duplication
 - [ ] Data-driven tests with [TestCase]
-- [ ] HTML report generation
+- [x] ~~HTML report generation~~ (Done - Allure)
 - [ ] Parallel test execution
 
 **Medium Priority**
@@ -105,4 +111,4 @@ NUnit + Selenium C# test automation framework for technical interview preparatio
 ---
 
 **Status:** Production-ready for interview demonstration  
-**Updated:** February 6, 2026
+**Updated:** February 7, 2026

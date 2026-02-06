@@ -1,3 +1,5 @@
+using Allure.NUnit;
+using Allure.NUnit.Attributes;
 using Bogus;
 using RestSharp;
 using System.Net;
@@ -10,6 +12,8 @@ namespace OpencartTests.Tests.ApiTests;
 /// </summary>
 [TestFixture]
 [Category("API")]
+[AllureNUnit]
+[AllureSuite("API Tests")]
 public class ApiCrudTests
 {
     private RestClient _client = null!;

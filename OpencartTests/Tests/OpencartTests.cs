@@ -1,3 +1,5 @@
+using Allure.NUnit;
+using Allure.NUnit.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpencartTests.Helpers;
@@ -8,6 +10,8 @@ using static OpencartTests.Helpers.TestData;
 namespace OpencartTests.Tests
 {
     [TestFixture]
+    [AllureNUnit]
+    [AllureSuite("UI Tests")]
     public class OpencartTests
     {
         private IWebDriver driver;
