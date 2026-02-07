@@ -1,23 +1,35 @@
 # Opencart Test Automation Framework
 
-C#/.NET test automation framework using NUnit, Selenium WebDriver, and Page Object Model for testing the Opencart e-commerce application, plus REST API testing.
+C#/.NET test automation framework covering UI, API, and Database testing layers using NUnit, Selenium, RestSharp, and SQLite.
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 OpencartTests/
 ├── Configuration/        # Centralized config (appsettings.json)
-├── Helpers/             # DriverManager, TestDataGenerator
-├── Pages/               # Page Object Model (POM)
+├── Helpers/
+│   ├── DriverManager.cs         # Browser factory (Chrome/Firefox/Edge)
+│   ├── DbHelper.cs              # Database connection & query helper
+│   ├── ExtentReportManager.cs   # HTML report generation (Singleton)
+│   ├── TestData.cs              # Static test data
+│   └── TestDataGenerator.cs     # Random data with Bogus
+├── Pages/                # Page Object Model (POM)
+│   ├── HomePage.cs
+│   ├── LoginPage.cs
+│   ├── RegisterPage.cs
+│   └── SearchResultsPage.cs
 ├── Tests/
-│   ├── OpencartTests.cs        # UI tests
-│   ├── RegistrationTests.cs    # Registration tests
-│   └── ApiTests/
-│       └── ApiCrudTests.cs     # REST API tests
-└── appsettings.json     # Configuration
+│   ├── OpencartTests.cs         # UI smoke & regression tests
+│   ├── RegistrationTests.cs     # Registration with random data
+│   ├── ApiTests/
+│   │   └── ApiCrudTests.cs      # REST API CRUD tests
+│   └── DatabaseTests/
+│       ├── BaseDatabaseTest.cs  # In-memory SQLite setup/teardown
+│       └── DatabaseCrudTests.cs # SQL CRUD & JOIN tests
+└── appsettings.json
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Install dependencies
@@ -29,12 +41,34 @@ dotnet test
 # Run by category
 dotnet test --filter "Category=Smoke"
 dotnet test --filter "Category=API"
+dotnet test --filter "Category=Database"
 
 # Run with verbose output
 dotnet test --logger "console;verbosity=detailed"
 ```
 
-## ⚙️ Configuration
+## Test Suites
+
+### UI Tests (Selenium)
+- Homepage title verification
+- Navigation to login page
+- Invalid login error handling
+- Product search functionality
+- User registration with random data (Bogus)
+
+### API Tests (RestSharp)
+- POST → GET → PUT → GET sequential CRUD flow
+- Status code & response data validation
+- State management across ordered tests
+
+### Database Tests (SQLite)
+- Schema verification via sqlite_master
+- INSERT and verify with SELECT query
+- UPDATE and verify changed value with ExecuteScalar
+- DELETE with CASCADE — verify child rows removed
+- INNER JOIN to verify parent-child relationship
+
+## Configuration
 
 **Layered approach:** appsettings.json → Environment-specific JSON → Environment variables
 
@@ -48,83 +82,40 @@ dotnet test --logger "console;verbosity=detailed"
 }
 ```
 
-**Override example:**
+Override at runtime:
 ```bash
 export TestConfiguration__Browser__Headless=true
 dotnet test
 ```
 
-## 🎨 Design Patterns & Features
+## Design Patterns
 
-| Pattern | Implementation | Purpose |
-|---------|---------------|---------|
+| Pattern | Where | Purpose |
+|---------|-------|---------|
 | **Page Object Model** | `Pages/*.cs` | Separates UI logic from tests |
-| **Factory Pattern** | `DriverManager` | Multi-browser support (Chrome/Firefox/Edge) |
-| **Singleton Pattern** | `ConfigurationHelper` | Thread-safe config management |
-| **Test Data Generation** | `Bogus library` | Random data per test run |
+| **Factory Pattern** | `DriverManager` | Multi-browser support |
+| **Singleton Pattern** | `ExtentReportManager` | One shared HTML report |
+| **Inheritance** | `BaseDatabaseTest` | Shared DB setup/teardown for all DB tests |
+| **IDisposable** | `DbHelper` | Proper connection cleanup |
 
-**Key Features:**
-- Multi-browser support with auto-detection of CI environment
-- Strongly-typed configuration with environment overrides
-- Explicit waits for dynamic elements
-- Sequential API testing (POST → GET → PUT → GET)
-- Allure reporting for test results
+## Reporting
 
-## 🧪 Test Suites
-
-### UI Tests (Selenium)
-- **Smoke:** Homepage title, navigation
-- **Regression:** Login, search, registration
-- Uses Bogus for random test data
-
-### API Tests (RestSharp)
-- **CRUD operations** on REST API
-- Sequential execution with `[Order]`
-- Status code & data validation
-- Demonstrates code reusability (DRY principle)
-
+### Allure Reports
 ```bash
-dotnet test --filter "Category=Smoke"
 dotnet test --filter "Category=API"
-```
-
-## 📊 Allure Reporting
-
-Run tests and view interactive HTML report:
-
-```bash
-cd OpencartTests
-
-# Run tests (generates allure-results/)
-dotnet test --filter "Category=API"
-
-# Open report in browser
 allure serve allure-results
 ```
 
-**Prerequisites:** Install Allure CLI (`brew install allure`)
+### ExtentReports
+HTML reports auto-generated in `TestResults/Reports/` with timestamped filenames.
 
-## 💬 Interview Talking Points
-
-**Configuration Management:**
-*"I use appsettings.json with IConfiguration for type-safe, environment-aware config. This follows .NET best practices and 12-factor app methodology. Same tests run against Dev/Staging/Prod without code changes. Secrets injected via environment variables in CI/CD."*
-
-**Page Object Model:**
-*"POM encapsulates page logic, making tests maintainable. If a locator changes, I update one place. Tests describe business workflow, not technical implementation. Follows Single Responsibility Principle."*
-
-**Factory Pattern (DriverManager):**
-*"Centralizes WebDriver configuration—multi-browser support, environment detection, browser options in one place. Makes it trivial to switch browsers or add CI-specific flags."*
-
-**API Testing Approach:**
-*"Sequential CRUD tests with state management. Reuse GET test for verification after PUT (DRY principle). This verifies actual persistence, not just PUT response. Mirrors real-world usage patterns."*
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 - .NET 10.0 | NUnit 4.3.2 | Selenium WebDriver 4.40.0
-- RestSharp 113.1.0 | Bogus 35.6.5 | Allure.NUnit 2.14.1
-- Microsoft.Extensions.Configuration 9.0.1
+- RestSharp 113.1.0 | Microsoft.Data.Sqlite 10.0.2
+- Bogus 35.6.5 | Allure.NUnit 2.14.1 | ExtentReports
 
-## 📄 Documentation
+## Documentation
 
-- `PROJECT_PROGRESS.md` - Feature tracking
-- `CONFIGURATION_SETUP.md` - Config details
+- `PROJECT_PROGRESS.md` — Feature tracking & backlog
+- `CONFIGURATION_SETUP.md` — Configuration details
