@@ -6,13 +6,14 @@ using OpencartTests.Helpers;
 using OpencartTests.Pages;
 using OpencartTests.Configuration;
 
-namespace OpencartTests.Tests
+namespace OpencartTests.Tests.UITests
 {
     /// <summary>
     /// Tests for user registration functionality
     /// Uses dynamic test data (Faker/Bogus) to generate unique data for each run
     /// </summary>
     [TestFixture]
+    [Category("Regression")]
     [AllureNUnit]
     [AllureSuite("Registration Tests")]
     public class RegistrationTests
@@ -35,7 +36,6 @@ namespace OpencartTests.Tests
         }
 
         [Test]
-        [Category("Regression")]
         public void Test_UserRegistration_WithValidData_Success()
         {
             // Arrange - Generate RANDOM user data (unique every time!)

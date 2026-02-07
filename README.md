@@ -1,6 +1,6 @@
 # Opencart Test Automation Framework
 
-C#/.NET test automation framework covering UI, API, and Database testing layers using NUnit, Selenium, RestSharp, and SQLite.
+C#/.NET test automation framework covering UI, API, Database, and Performance testing layers using NUnit, Selenium, RestSharp, SQLite, and NBomber.
 
 ## Project Structure
 
@@ -19,13 +19,17 @@ OpencartTests/
 │   ├── RegisterPage.cs
 │   └── SearchResultsPage.cs
 ├── Tests/
-│   ├── OpencartTests.cs         # UI smoke & regression tests
-│   ├── RegistrationTests.cs     # Registration with random data
+│   ├── BaseTest.cs              # Abstract base with screenshot on failure
+│   ├── UITests/
+│   │   ├── OpencartTests.cs     # UI smoke & regression tests
+│   │   └── RegistrationTests.cs # Registration with random data
 │   ├── ApiTests/
 │   │   └── ApiCrudTests.cs      # REST API CRUD tests
-│   └── DatabaseTests/
-│       ├── BaseDatabaseTest.cs  # In-memory SQLite setup/teardown
-│       └── DatabaseCrudTests.cs # SQL CRUD & JOIN tests
+│   ├── DatabaseTests/
+│   │   ├── BaseDatabaseTest.cs  # In-memory SQLite setup/teardown
+│   │   └── DatabaseCrudTests.cs # SQL CRUD & JOIN tests
+│   └── PerformanceTests/
+│       └── ApiLoadTests.cs      # Load testing with NBomber
 └── appsettings.json
 ```
 
@@ -42,6 +46,7 @@ dotnet test
 dotnet test --filter "Category=Smoke"
 dotnet test --filter "Category=API"
 dotnet test --filter "Category=Database"
+dotnet test --filter "Category=Performance"
 
 # Run with verbose output
 dotnet test --logger "console;verbosity=detailed"
@@ -67,6 +72,11 @@ dotnet test --logger "console;verbosity=detailed"
 - UPDATE and verify changed value with ExecuteScalar
 - DELETE with CASCADE — verify child rows removed
 - INNER JOIN to verify parent-child relationship
+
+### Performance Tests (NBomber)
+- Constant load test — 10 requests/second for 30 seconds
+- Latency assertions (p95 threshold)
+- HTML report generation with detailed metrics (RPS, latency percentiles, error rate)
 
 ## Configuration
 
@@ -109,10 +119,14 @@ allure serve allure-results
 ### ExtentReports
 HTML reports auto-generated in `TestResults/Reports/` with timestamped filenames.
 
+### NBomber Reports
+Performance test HTML reports saved in `TestResults/PerformanceReports/` with session timestamps.
+
 ## Tech Stack
 
 - .NET 10.0 | NUnit 4.3.2 | Selenium WebDriver 4.40.0
 - RestSharp 113.1.0 | Microsoft.Data.Sqlite 10.0.2
+- NBomber 6.2.0 | NBomber.Http 6.1.0
 - Bogus 35.6.5 | Allure.NUnit 2.14.1 | ExtentReports
 
 ## Documentation

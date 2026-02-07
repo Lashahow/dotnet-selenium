@@ -7,7 +7,7 @@ using OpencartTests.Pages;
 using OpencartTests.Configuration;
 using static OpencartTests.Helpers.TestData;
 
-namespace OpencartTests.Tests
+namespace OpencartTests.Tests.UITests
 {
     [TestFixture]
     [AllureNUnit]

@@ -40,6 +40,11 @@ NUnit + Selenium + RestSharp + SQLite test automation framework for technical in
 - DELETE policy and verify CASCADE removes claims
 - INSERT policy + claim and verify with JOIN query
 
+**Performance Tests (1 test)**
+- GET constant load — 10 req/sec for 30 seconds using NBomber
+- Asserts on p95 latency threshold and success count
+- Generates HTML report with RPS, latency percentiles, error rate
+
 ### Reporting
 - Allure Report integration
 - ExtentReports HTML generation (dark theme, timestamped files)
@@ -68,6 +73,7 @@ NUnit + Selenium + RestSharp + SQLite test automation framework for technical in
 - [ ] BaseTest class to reduce UI test duplication
 - [ ] Data-driven tests with [TestCase]
 - [x] ~~HTML report generation~~ (Done — Allure + ExtentReports)
+- [x] ~~Performance/Load testing~~ (Done — NBomber)
 - [ ] Parallel test execution
 
 **Medium Priority**
@@ -84,13 +90,14 @@ NUnit + Selenium + RestSharp + SQLite test automation framework for technical in
 
 ## Test Results
 
-**Last Run:** All 14 tests passed
+**Last Run:** All 15 tests passed
 
 | Suite | Tests | Time |
 |-------|-------|------|
 | UI Tests | 5/5 | ~24s |
 | API Tests | 4/4 | ~2s |
 | Database Tests | 5/5 | <1s |
+| Performance Tests | 1/1 | ~33s |
 
 ---
 
